@@ -49,7 +49,16 @@ jobs:
             ${{env.x86_MINGW_PACKAGE_PREFIX}}-vala
       - uses: actions/checkout@v4
 
-      - name: Build `nxdumpclient`
+      - name: Verify environment variables
+        run: |
+          echo "x86_MINGW_PACKAGE_PREFIX = ${{env.x86_MINGW_PACKAGE_PREFIX}}"
+          echo "short_commit=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
+
+      - name: Run `meson setup` for `nxdumpclient`
+        run: |
+          meson setup --buildtype=debugoptimized -Db_lto=true -Denforce_build_order=true --prefix=/usr build --wrap-mode forcefallback
+
+      - name: Run `meson build` for `nxdumpclient`
         run: |
           echo "x86_MINGW_PACKAGE_PREFIX = ${{env.x86_MINGW_PACKAGE_PREFIX}}"
           meson setup --buildtype=debugoptimized -Db_lto=true -Denforce_build_order=true --prefix=/usr build --wrap-mode forcefallback
@@ -57,6 +66,6 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: nxdt_rw_poc-${{ env.nxdt_commit }}.nro
-          path: nxdumptool/code_templates/tmp/nxdt_rw_poc.nro
+          name: nxdumpclient_build-${{ env.short_commit }}
+          path: build
           if-no-files-found: error
