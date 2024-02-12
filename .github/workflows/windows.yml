@@ -16,7 +16,6 @@ on:
 
 env:
   PYTHONUTF8: 1
-  # x86_MINGW_PACKAGE_PREFIX: mingw-w64-ucrt-x86_64
 
 jobs:
   build:
@@ -51,9 +50,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build `nxdumpclient`
-        run: >
-          echo "${x86_MINGW_PACKAGE_PREFIX}"
-          echo "$x86_MINGW_PACKAGE_PREFIX"
+        run: |
+          echo "x86_MINGW_PACKAGE_PREFIX = ${{env.x86_MINGW_PACKAGE_PREFIX}}"
           meson setup --buildtype=debugoptimized -Db_lto=true -Denforce_build_order=true --prefix=/usr build --wrap-mode forcefallback
           meson compile -C build
 
