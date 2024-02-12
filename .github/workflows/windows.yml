@@ -39,13 +39,13 @@ jobs:
           msystem: UCRT64
           install: >-
             git
-            ${{x86_MINGW_PACKAGE_PREFIX}}-desktop-file-utils
-            ${{x86_MINGW_PACKAGE_PREFIX}}-gtk4
-            ${{x86_MINGW_PACKAGE_PREFIX}}-libadwaita
-            ${{x86_MINGW_PACKAGE_PREFIX}}-libgusb
-            ${{x86_MINGW_PACKAGE_PREFIX}}-meson
-            ${{x86_MINGW_PACKAGE_PREFIX}}-toolchain
-            ${{x86_MINGW_PACKAGE_PREFIX}}-vala
+            ${{env.x86_MINGW_PACKAGE_PREFIX}}-desktop-file-utils
+            ${{env.x86_MINGW_PACKAGE_PREFIX}}-gtk4
+            ${{env.x86_MINGW_PACKAGE_PREFIX}}-libadwaita
+            ${{env.x86_MINGW_PACKAGE_PREFIX}}-libgusb
+            ${{env.x86_MINGW_PACKAGE_PREFIX}}-meson
+            ${{env.x86_MINGW_PACKAGE_PREFIX}}-toolchain
+            ${{env.x86_MINGW_PACKAGE_PREFIX}}-vala
       - uses: actions/checkout@v4
 
       - name: Build `nxdumpclient`
