@@ -23,8 +23,9 @@ jobs:
 
     strategy:
       fail-fast: false
-      arch:
-        - x86_64
+      matrix:
+        arch:
+          - x86_64
 
     defaults:
       run:
