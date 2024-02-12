@@ -1,0 +1,61 @@
+############
+# Known commands to use:
+# export 
+# pacman -S git mingw-w64-ucrt-x86_64-desktop-file-utils mingw-w64-ucrt-x86_64-gtk4 mingw-w64-ucrt-x86_64-libadwaita mingw-w64-ucrt-x86_64-libgusb mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-vala
+############
+
+name: Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  release:
+    types: published
+
+env:
+  PYTHONUTF8: 1
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - x86_64
+          - aarch64
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          msystem: UCRT64
+          install: >-
+            git
+            ${MINGW_PACKAGE_PREFIX}-desktop-file-utils
+            ${MINGW_PACKAGE_PREFIX}-gtk4
+            ${MINGW_PACKAGE_PREFIX}-libadwaita
+            ${MINGW_PACKAGE_PREFIX}-libgusb
+            ${MINGW_PACKAGE_PREFIX}-meson
+            ${MINGW_PACKAGE_PREFIX}-toolchain
+            ${MINGW_PACKAGE_PREFIX}-vala
+      - uses: actions/checkout@v4
+
+      - name: Build `nxdumpclient`
+        run: >
+          echo "${MINGW_PACKAGE_PREFIX}"
+          meson setup --buildtype=debugoptimized -Db_lto=true -Denforce_build_order=true --prefix=/usr build --wrap-mode forcefallback
+          meson compile -C build
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nxdt_rw_poc-${{ env.nxdt_commit }}.nro
+          path: nxdumptool/code_templates/tmp/nxdt_rw_poc.nro
+          if-no-files-found: error
