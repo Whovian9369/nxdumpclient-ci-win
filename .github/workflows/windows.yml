@@ -16,7 +16,7 @@ on:
 
 env:
   PYTHONUTF8: 1
-  x86_MINGW_PACKAGE_PREFIX: mingw-w64-ucrt-x86_64
+  # x86_MINGW_PACKAGE_PREFIX: mingw-w64-ucrt-x86_64
 
 jobs:
   build:
