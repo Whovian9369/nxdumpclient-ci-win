@@ -16,6 +16,7 @@ on:
 
 env:
   PYTHONUTF8: 1
+  x86_MINGW_PACKAGE_PREFIX: mingw-w64-ucrt-x86_64
 
 jobs:
   build:
@@ -38,18 +39,19 @@ jobs:
           msystem: UCRT64
           install: >-
             git
-            "$MINGW_PACKAGE_PREFIX"-desktop-file-utils
-            "$MINGW_PACKAGE_PREFIX"-gtk4
-            "$MINGW_PACKAGE_PREFIX"-libadwaita
-            "$MINGW_PACKAGE_PREFIX"-libgusb
-            "$MINGW_PACKAGE_PREFIX"-meson
-            "$MINGW_PACKAGE_PREFIX"-toolchain
-            "$MINGW_PACKAGE_PREFIX"-vala
+            $x86_MINGW_PACKAGE_PREFIX-desktop-file-utils
+            $x86_MINGW_PACKAGE_PREFIX-gtk4
+            $x86_MINGW_PACKAGE_PREFIX-libadwaita
+            $x86_MINGW_PACKAGE_PREFIX-libgusb
+            $x86_MINGW_PACKAGE_PREFIX-meson
+            $x86_MINGW_PACKAGE_PREFIX-toolchain
+            $x86_MINGW_PACKAGE_PREFIX-vala
       - uses: actions/checkout@v4
 
       - name: Build `nxdumpclient`
         run: >
-          echo "${MINGW_PACKAGE_PREFIX}"
+          echo "${x86_MINGW_PACKAGE_PREFIX}"
+          echo "$x86_MINGW_PACKAGE_PREFIX"
           meson setup --buildtype=debugoptimized -Db_lto=true -Denforce_build_order=true --prefix=/usr build --wrap-mode forcefallback
           meson compile -C build
 
