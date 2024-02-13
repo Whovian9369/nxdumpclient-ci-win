@@ -46,6 +46,9 @@ jobs:
         run: |
           echo "short_commit=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
 
+      - name: Apply patch to change quote characters
+        run: sed -i 's/“Strict”/\\\"Strict\\\"/g' "src/PreferencesWindow.blp"
+
       - name: Run `meson setup` for `nxdumpclient`
         run: |
           meson setup --buildtype=debugoptimized -Db_lto=true -Denforce_build_order=true --prefix=/usr build --wrap-mode forcefallback
