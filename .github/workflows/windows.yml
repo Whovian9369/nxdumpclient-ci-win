@@ -16,7 +16,6 @@ on:
 
 env:
   PYTHONUTF8: 1
-  x86_MINGW_PACKAGE_PREFIX: mingw-w64-ucrt-x86_64
 
 jobs:
   build:
@@ -39,18 +38,18 @@ jobs:
           msystem: UCRT64
           install: >-
             git
-            ${{env.x86_MINGW_PACKAGE_PREFIX}}-desktop-file-utils
-            ${{env.x86_MINGW_PACKAGE_PREFIX}}-gtk4
-            ${{env.x86_MINGW_PACKAGE_PREFIX}}-libadwaita
-            ${{env.x86_MINGW_PACKAGE_PREFIX}}-libgusb
-            ${{env.x86_MINGW_PACKAGE_PREFIX}}-meson
-            ${{env.x86_MINGW_PACKAGE_PREFIX}}-toolchain
-            ${{env.x86_MINGW_PACKAGE_PREFIX}}-vala
+            mingw-w64-ucrt-x86_64-desktop-file-utils
+            mingw-w64-ucrt-x86_64-gtk4
+            mingw-w64-ucrt-x86_64-libadwaita
+            mingw-w64-ucrt-x86_64-libgusb
+            mingw-w64-ucrt-x86_64-meson
+            mingw-w64-ucrt-x86_64-toolchain
+            mingw-w64-ucrt-x86_64-vala
       - uses: actions/checkout@v4
 
       - name: Verify environment variables
         run: |
-          echo "x86_MINGW_PACKAGE_PREFIX = ${{env.x86_MINGW_PACKAGE_PREFIX}}"
+          echo "x86_MINGW_PACKAGE_PREFIX = mingw-w64-ucrt-x86_64"
           echo "short_commit=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
 
       - name: Run `meson setup` for `nxdumpclient`
@@ -59,8 +58,6 @@ jobs:
 
       - name: Run `meson build` for `nxdumpclient`
         run: |
-          echo "x86_MINGW_PACKAGE_PREFIX = ${{env.x86_MINGW_PACKAGE_PREFIX}}"
-          meson setup --buildtype=debugoptimized -Db_lto=true -Denforce_build_order=true --prefix=/usr build --wrap-mode forcefallback
           meson compile -C build
 
       - uses: actions/upload-artifact@v3
